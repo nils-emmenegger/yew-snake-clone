@@ -1,0 +1,18 @@
+.grid-block {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  border: 2px solid #ccc;
+}
+
+.grid-empty {
+  background-color: black;
+}
+
+.grid-snake {
+  background-color: green;
+}
+
+.grid-apple {
+	background-color: red;
+}
