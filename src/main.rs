@@ -3,43 +3,21 @@ mod grid;
 use grid::Grid;
 use yew::prelude::*;
 
-struct App {
-    playing: bool,
-}
-
-enum Msg {
-    PressPlay,
-}
-
-impl Component for App {
-    type Message = Msg;
-
-    type Properties = ();
-
-    fn create(_ctx: &Context<Self>) -> Self {
-        App { playing: false }
-    }
-
-    fn update(&mut self, _ctx: &Context<Self>, msg: Msg) -> bool {
-        match msg {
-            Msg::PressPlay => {
-                self.playing = true;
-                true
+#[function_component]
+fn App() -> Html {
+    let playing = use_state(|| false);
+    let onclick = {
+        let playing = playing.clone();
+        Callback::from(move |_| playing.set(true))
+    };
+    html! {
+        <div>
+            if *playing {
+                <Grid grid_size={10}/>
+            } else {
+                <button {onclick}>{ "Play game" }</button>
             }
-        }
-    }
-
-    fn view(&self, ctx: &Context<Self>) -> Html {
-        let link = ctx.link();
-        html! {
-            <div>
-                if self.playing {
-                    <Grid grid_size={10}/>
-                } else {
-                    <button onclick={link.callback(|_| Msg::PressPlay)}>{ "Play game" }</button>
-                }
-            </div>
-        }
+        </div>
     }
 }
 
