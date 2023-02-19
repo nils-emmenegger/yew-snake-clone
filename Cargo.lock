@@ -892,16 +892,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "yew-app"
-version = "0.1.0"
-dependencies = [
- "getrandom",
- "gloo-timers",
- "rand",
- "yew",
-]
-
-[[package]]
 name = "yew-macro"
 version = "0.20.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -914,4 +904,14 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "yew-snake-clone"
+version = "0.1.0"
+dependencies = [
+ "getrandom",
+ "gloo-timers",
+ "rand",
+ "yew",
 ]
