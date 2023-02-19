@@ -3,7 +3,7 @@ mod grid;
 use grid::Grid;
 use yew::prelude::*;
 
-struct Snake {
+struct App {
     playing: bool,
 }
 
@@ -11,13 +11,13 @@ enum Msg {
     PressPlay,
 }
 
-impl Component for Snake {
+impl Component for App {
     type Message = Msg;
 
     type Properties = ();
 
     fn create(_ctx: &Context<Self>) -> Self {
-        Snake { playing: false }
+        App { playing: false }
     }
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Msg) -> bool {
@@ -44,5 +44,5 @@ impl Component for Snake {
 }
 
 fn main() {
-    yew::Renderer::<Snake>::new().render();
+    yew::Renderer::<App>::new().render();
 }
