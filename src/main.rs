@@ -44,5 +44,5 @@ impl Component for Snake {
 }
 
 fn main() {
-    yew::start_app::<Snake>();
+    yew::Renderer::<Snake>::new().render();
 }

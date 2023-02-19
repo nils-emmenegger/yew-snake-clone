@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-yew = "0.19"
-gloo-timers = "0.2.4"
+yew = { version = "0.20", features = ["csr"] }
+gloo-timers = "0.2.6"
 getrandom = { version = "0.2.7", features = ["js"] }
 rand = "0.8.5"
