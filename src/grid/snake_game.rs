@@ -81,20 +81,15 @@ impl Grid {
     }
 
     pub fn change_dir(&mut self, d: Dir) -> () {
-        match d {
-            Dir::Up => {
-                self.dir = (-1, 0);
-            }
-            Dir::Down => {
-                self.dir = (1, 0);
-            }
-            Dir::Left => {
-                self.dir = (0, -1);
-            }
-            Dir::Right => {
-                self.dir = (0, 1);
-            }
+        let new_dir = match d {
+            Dir::Up => (-1, 0),
+            Dir::Down => (1, 0),
+            Dir::Left => (0, -1),
+            Dir::Right => (0, 1),
         };
+        if self.dir != (-new_dir.0, -new_dir.1) {
+            self.dir = new_dir;
+        }
     }
 
     pub fn get_cell(&self, i: usize, j: usize) -> Cell {
