@@ -12,6 +12,7 @@ pub struct Grid {
 pub enum Msg {
     Tick,
     Dir(snake_game::Dir),
+    DoNothing,
 }
 
 #[derive(Properties, PartialEq)]
@@ -40,6 +41,7 @@ impl Component for Grid {
                 self.grid.change_dir(d);
                 false
             }
+            Msg::DoNothing => false,
         }
     }
 
@@ -58,16 +60,24 @@ impl Component for Grid {
             }
             items.push(html! { <br/> });
         }
-        let mc = |m| ctx.link().callback(move |_| m);
+        let onkeydown = {
+            ctx.link()
+                .callback(move |k: KeyboardEvent| match k.key().as_str() {
+                    "w" => Msg::Dir(snake_game::Dir::Up),
+                    "a" => Msg::Dir(snake_game::Dir::Left),
+                    "s" => Msg::Dir(snake_game::Dir::Down),
+                    "d" => Msg::Dir(snake_game::Dir::Right),
+                    "ArrowUp" => Msg::Dir(snake_game::Dir::Up),
+                    "ArrowLeft" => Msg::Dir(snake_game::Dir::Left),
+                    "ArrowDown" => Msg::Dir(snake_game::Dir::Down),
+                    "ArrowRight" => Msg::Dir(snake_game::Dir::Right),
+                    _ => Msg::DoNothing,
+                })
+        };
         html! {
-            <>
+            <div tabIndex={"0"} {onkeydown}>
             { for items }
-            <button onclick={mc(Msg::Dir(snake_game::Dir::Down))}>{ "Down" }</button>
-            <button onclick={mc(Msg::Dir(snake_game::Dir::Up))}>{ "Up" }</button>
-            <br/>
-            <button onclick={mc(Msg::Dir(snake_game::Dir::Left))}>{ "Left" }</button>
-            <button onclick={mc(Msg::Dir(snake_game::Dir::Right))}>{ "Right" }</button>
-            </>
+            </div>
         }
     }
 }
