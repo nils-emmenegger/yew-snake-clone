@@ -911,7 +911,9 @@ name = "yew-snake-clone"
 version = "0.1.0"
 dependencies = [
  "getrandom",
+ "gloo",
  "gloo-timers",
  "rand",
+ "wasm-bindgen",
  "yew",
 ]

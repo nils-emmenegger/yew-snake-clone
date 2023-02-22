@@ -1,11 +1,15 @@
 mod snake_game;
 
+use gloo::events::EventListener;
 use gloo_timers::callback::Interval;
+use wasm_bindgen::JsCast;
+use wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
 
 pub struct Grid {
     grid: snake_game::Grid,
     _interval: Interval,
+    kbd_listener: Option<EventListener>,
 }
 
 #[derive(Clone, Copy)]
@@ -31,6 +35,7 @@ impl Component for Grid {
         Grid {
             grid: snake_game::Grid::with_size(ctx.props().grid_size),
             _interval,
+            kbd_listener: None,
         }
     }
 
@@ -42,6 +47,30 @@ impl Component for Grid {
                 false
             }
             Msg::DoNothing => false,
+        }
+    }
+
+    fn rendered(&mut self, ctx: &Context<Self>, first_render: bool) {
+        if first_render {
+            let document = gloo::utils::document();
+            let kbd_callback =
+                ctx.link()
+                    .callback(move |k: KeyboardEvent| match k.key().as_str() {
+                        "w" => Msg::Dir(snake_game::Dir::Up),
+                        "a" => Msg::Dir(snake_game::Dir::Left),
+                        "s" => Msg::Dir(snake_game::Dir::Down),
+                        "d" => Msg::Dir(snake_game::Dir::Right),
+                        "ArrowUp" => Msg::Dir(snake_game::Dir::Up),
+                        "ArrowLeft" => Msg::Dir(snake_game::Dir::Left),
+                        "ArrowDown" => Msg::Dir(snake_game::Dir::Down),
+                        "ArrowRight" => Msg::Dir(snake_game::Dir::Right),
+                        _ => Msg::DoNothing,
+                    });
+            let listener = EventListener::new(&document, "keydown", move |event| {
+                let event = event.dyn_ref::<KeyboardEvent>().unwrap_throw();
+                kbd_callback.emit(event.clone());
+            });
+            self.kbd_listener.replace(listener);
         }
     }
 
@@ -60,24 +89,10 @@ impl Component for Grid {
             }
             items.push(html! { <br/> });
         }
-        let onkeydown = {
-            ctx.link()
-                .callback(move |k: KeyboardEvent| match k.key().as_str() {
-                    "w" => Msg::Dir(snake_game::Dir::Up),
-                    "a" => Msg::Dir(snake_game::Dir::Left),
-                    "s" => Msg::Dir(snake_game::Dir::Down),
-                    "d" => Msg::Dir(snake_game::Dir::Right),
-                    "ArrowUp" => Msg::Dir(snake_game::Dir::Up),
-                    "ArrowLeft" => Msg::Dir(snake_game::Dir::Left),
-                    "ArrowDown" => Msg::Dir(snake_game::Dir::Down),
-                    "ArrowRight" => Msg::Dir(snake_game::Dir::Right),
-                    _ => Msg::DoNothing,
-                })
-        };
         html! {
-            <div tabIndex={"0"} {onkeydown}>
+            <>
             { for items }
-            </div>
+            </>
         }
     }
 }
