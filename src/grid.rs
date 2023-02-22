@@ -2,6 +2,7 @@ mod snake_game;
 
 use gloo::events::EventListener;
 use gloo_timers::callback::Interval;
+use snake_game::Dir::*;
 use wasm_bindgen::JsCast;
 use wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
@@ -56,14 +57,14 @@ impl Component for Grid {
             let kbd_callback =
                 ctx.link()
                     .callback(move |k: KeyboardEvent| match k.key().as_str() {
-                        "w" => Msg::Dir(snake_game::Dir::Up),
-                        "a" => Msg::Dir(snake_game::Dir::Left),
-                        "s" => Msg::Dir(snake_game::Dir::Down),
-                        "d" => Msg::Dir(snake_game::Dir::Right),
-                        "ArrowUp" => Msg::Dir(snake_game::Dir::Up),
-                        "ArrowLeft" => Msg::Dir(snake_game::Dir::Left),
-                        "ArrowDown" => Msg::Dir(snake_game::Dir::Down),
-                        "ArrowRight" => Msg::Dir(snake_game::Dir::Right),
+                        "w" => Msg::Dir(Up),
+                        "a" => Msg::Dir(Left),
+                        "s" => Msg::Dir(Down),
+                        "d" => Msg::Dir(Right),
+                        "ArrowUp" => Msg::Dir(Up),
+                        "ArrowLeft" => Msg::Dir(Left),
+                        "ArrowDown" => Msg::Dir(Down),
+                        "ArrowRight" => Msg::Dir(Right),
                         _ => Msg::DoNothing,
                     });
             let listener = EventListener::new(&document, "keydown", move |event| {
