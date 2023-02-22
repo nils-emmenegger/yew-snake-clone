@@ -76,7 +76,7 @@ impl Component for Grid {
 
     fn view(&self, ctx: &Context<Self>) -> Html {
         let sz = ctx.props().grid_size;
-        let mut items = Vec::with_capacity(sz * (sz + 1));
+        let mut items = Vec::with_capacity(sz * sz);
         for i in 0..sz {
             for j in 0..sz {
                 items.push(html! {
@@ -87,12 +87,11 @@ impl Component for Grid {
                                         snake_game::Cell::Apple => "grid-apple",
                                     })}></div> });
             }
-            items.push(html! { <br/> });
         }
         html! {
-            <>
+            <div style={AttrValue::from(format!("display: inline-grid; grid-template-columns: repeat({}, auto);", sz))}>
             { for items }
-            </>
+            </div>
         }
     }
 }
